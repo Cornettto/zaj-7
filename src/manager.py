@@ -84,3 +84,7 @@ class Manager:
             if total_paid < tenant_settlement.total_due_pln:
                 output.append(tenant_settlement.tenant)
         return output
+    
+    def calculate_tax(self, year: int, month: int, tax_rate: float) -> float:
+        total_income = sum([transfer.amount_pln for transfer in self.transfers if transfer.settlement_year == year and transfer.settlement_month == month])
+        return round(total_income * tax_rate, 0)

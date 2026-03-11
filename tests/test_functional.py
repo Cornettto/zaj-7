@@ -21,3 +21,13 @@ def test_debtors_calculation():
 
     debtors = manager.get_debtors('apart-polanka', 2025, 2)
     assert len(debtors) == 3
+
+
+def test_tax_calculation():
+    manager = Manager(Parameters())
+    
+    tax = manager.calculate_tax(2025, 1, 0.085)
+    assert tax == 638 # 0.085 * 7500.0
+
+    tax = manager.calculate_tax(2025, 2, 0.085)
+    assert tax == 0
