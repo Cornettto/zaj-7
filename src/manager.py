@@ -97,3 +97,8 @@ class Manager:
             total_due += tenant.deposit_pln
         
         return total_deposits - total_due
+    
+    def get_annual_balance(self, year: int) -> float:
+        total_income = sum([transfer.amount_pln for transfer in self.transfers if transfer.settlement_year == year])
+        total_due = sum([bill.amount_pln for bill in self.bills if bill.settlement_year == year])
+        return total_income - total_due

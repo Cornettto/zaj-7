@@ -1,4 +1,4 @@
-from src.models import Parameters, TenantSettlement, ApartmentSettlement, Transfer
+from src.models import Bill, Parameters, TenantSettlement, ApartmentSettlement, Transfer
 from src.manager import Manager
 
 
@@ -49,3 +49,30 @@ def test_deposits_calculation():
 
     deposit_balance = manager.check_deposits()
     assert deposit_balance == -7700.0 # 1000.0 deposit in transfers
+
+def test_annual_balance_calculation():
+    manager = Manager(Parameters())
+    
+    annual_balance = manager.get_annual_balance(2025)
+    assert annual_balance == 6490.0 # 7500.0 in transfers minus 910.0 in bills
+
+    manager.bills.append(Bill(
+        apartment='apart-polanka',
+        date_due='2025-02-15',
+        settlement_year=2025,
+        settlement_month=5,
+        amount_pln=500.0,
+        type='rent'
+    ))
+
+    manager.bills.append(Bill(
+        apartment='apart-polanka',
+        date_due='2025-02-15',
+        settlement_year=2025,
+        settlement_month=5,
+        amount_pln=4500.0,
+        type='renovation'
+    ))
+
+    annual_balance = manager.get_annual_balance(2025)
+    assert annual_balance == 1490.0 # 7500.0 in transfers minus 910.0 in bills minus new bills 500.0 and 4500.0
