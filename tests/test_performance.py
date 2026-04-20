@@ -1,7 +1,7 @@
 import time
 import pytest
 
-from src.models import Apartment, Parameters
+from src.models import Apartment, Parameters, Tenant
 from src.manager import Manager
 
 
@@ -38,3 +38,6 @@ def test_search_for_apartment_large_dataset():
         f"Searching for non-existing apartment in {N} apartments took {fail_search_time:.3f}ms, limit {ALLOWED_SEARCH_TIME_MS}ms"
     )
 
+def check_tenants_apartment_keys(self) -> bool:
+    assigned_keys = {t.apartment for t in self.tenants.values()}
+    return assigned_keys <= self.apartments.keys()
